@@ -7,76 +7,81 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg:#f0f4ff;--card:#fff;--ink:#1e2d5a;--muted:#6b7da8;--border:#dde5f7;
-  --green:#10b981;--green-bg:#d1fae5;
-  --blue:#3b82f6;--blue-bg:#dbeafe;
-  --amber:#f59e0b;--amber-bg:#fef3c7;
-  --red:#ef4444;--red-bg:#fee2e2;
-  --shadow:0 2px 8px rgba(30,45,90,.1),0 1px 3px rgba(30,45,90,.06);
+  --bg:#ffffff;--card:#ffffff;--ink:#1a1a1a;--muted:#767676;--border:#e8e8e8;
+  --blue:#1428A0;--blue-bg:#f0f2ff;
+  --green:#2eb872;--green-bg:#edfaf4;
+  --amber:#f5a623;--amber-bg:#fffbf0;
+  --red:#eb4d4d;--red-bg:#fff2f2;
+  --shadow:0 1px 4px rgba(0,0,0,0.06);
+  --shadow-hover:0 4px 20px rgba(0,0,0,0.1);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);padding:20px 16px 60px;}
-.wrap{max-width:960px;margin:0 auto;}
-.page-title{font-size:18px;font-weight:700;margin-bottom:4px;}
-.page-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+body{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:#fff;color:var(--ink);padding:32px 32px 60px;}
+.wrap{max-width:1000px;margin:0 auto;}
+.page-title{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px;}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
 
 /* Loading */
-.loading{text-align:center;padding:48px;color:var(--muted);font-size:14px;}
-.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;}
+.loading{text-align:center;padding:60px;color:var(--muted);font-size:14px;}
+.spinner{display:inline-block;width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* CLASS BAR */
-.class-block{margin-bottom:10px;}
+.class-block{margin-bottom:1px;}
 .class-bar{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:14px 18px;cursor:pointer;
+  background:#fff;border:1px solid var(--border);
+  border-radius:0;
+  padding:18px 24px;cursor:pointer;
   display:flex;align-items:center;justify-content:space-between;gap:12px;
-  box-shadow:var(--shadow);transition:transform .12s,box-shadow .12s;
-  position:relative;overflow:hidden;
+  transition:background .15s;
 }
-.class-bar::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;}
-.class-bar.status-good::before{background:var(--green);}
-.class-bar.status-warn::before{background:var(--amber);}
-.class-bar.status-bad::before{background:var(--red);}
-.class-bar:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(30,45,90,.12);}
-.class-bar.open{border-radius:14px 14px 0 0;border-bottom-color:transparent;}
-.cb-left{display:flex;flex-direction:column;gap:2px;padding-left:8px;}
-.cb-name{font-size:15px;font-weight:700;}
-.cb-meta{font-size:11px;color:var(--muted);}
-.cb-right{display:flex;align-items:center;gap:14px;}
-.stat-group{display:flex;gap:14px;}
-.sp{display:flex;flex-direction:column;align-items:center;min-width:48px;}
-.sp .sv{font-size:16px;font-weight:800;}
-.sp .sk{font-size:10px;color:var(--muted);margin-top:1px;}
+.class-block:first-child .class-bar{border-radius:8px 8px 0 0;}
+.class-block:last-child .class-bar:not(.open){border-radius:0 0 8px 8px;}
+.class-bar:hover{background:#fafafa;}
+.class-bar:hover .cb-name{color:var(--blue);}
+.class-bar.open{background:#fafafa;border-bottom-color:transparent;}
+.cb-left{display:flex;flex-direction:column;gap:3px;}
+.cb-name{font-size:15px;font-weight:600;transition:color .15s;}
+.cb-meta{font-size:12px;color:var(--muted);}
+.cb-right{display:flex;align-items:center;gap:20px;}
+.stat-group{display:flex;gap:24px;}
+.sp{display:flex;flex-direction:column;align-items:center;min-width:52px;}
+.sp .sv{font-size:16px;font-weight:700;}
+.sp .sk{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
 .sv.g{color:var(--green)}.sv.w{color:var(--amber)}.sv.b{color:var(--red)}
-.chev{font-size:12px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+.chev{font-size:11px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
 .chev.open{transform:rotate(180deg);}
-.loading-bar{background:var(--bg);height:3px;border-radius:2px;overflow:hidden;margin-top:6px;}
-.loading-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));animation:loadbar 1.2s ease-in-out infinite;}
-@keyframes loadbar{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
+
+/* Progress bar subtle */
+.loading-bar{background:var(--border);height:2px;border-radius:1px;overflow:hidden;margin-top:8px;}
+.loading-bar-fill{height:100%;background:var(--blue);animation:loadbar 1s ease-in-out infinite;}
+@keyframes loadbar{0%{width:0;margin-left:0}60%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
 
 /* STUDENT LIST */
-.student-list{display:none;background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;overflow:hidden;}
+.student-list{display:none;background:#fff;border:1px solid var(--border);border-top:none;}
 .student-list.open{display:block;}
-.list-msg{padding:16px 20px;text-align:center;color:var(--muted);font-size:13px;}
+.class-block:last-child .student-list{border-radius:0 0 8px 8px;}
+.list-msg{padding:20px 24px;text-align:center;color:var(--muted);font-size:13px;}
+
 .student-row{
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 18px 10px 22px;border-bottom:1px solid var(--border);
-  cursor:pointer;transition:background .1s;
+  padding:12px 24px;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .12s;
 }
 .student-row:last-child{border-bottom:none;}
-.student-row:hover{background:#f5f7ff;}
-.student-row.risk{background:#fff5f5;}
-.student-row.risk:hover{background:#fee8e8;}
-.student-row.tip-open{background:#eef3ff;}
-.s-left{display:flex;flex-direction:column;gap:1px;}
-.s-name{font-size:13px;font-weight:600;}
+.student-row:hover{background:#fafafa;}
+.student-row:hover .s-name{color:var(--blue);}
+.student-row.risk{background:#fffafa;}
+.student-row.risk:hover{background:#fff5f5;}
+.student-row.tip-open{background:var(--blue-bg);}
+.s-left{display:flex;flex-direction:column;gap:2px;}
+.s-name{font-size:13px;font-weight:500;transition:color .12s;}
 .s-ma{font-size:10px;color:var(--muted);}
-.risk-tag{display:inline-block;background:var(--red-bg);color:var(--red);font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:6px;vertical-align:middle;}
-.s-metrics{display:flex;gap:14px;}
-.sm{text-align:center;min-width:52px;}
-.sm .mv{font-size:12px;font-weight:700;}
-.sm .mk{font-size:9px;color:var(--muted);}
+.risk-tag{display:inline-block;background:var(--red-bg);color:var(--red);font-size:9px;font-weight:600;padding:2px 6px;border-radius:2px;margin-left:8px;vertical-align:middle;}
+.s-metrics{display:flex;gap:20px;}
+.sm{text-align:right;min-width:56px;}
+.sm .mv{font-size:13px;font-weight:600;}
+.sm .mk{font-size:10px;color:var(--muted);margin-top:1px;}
 .mv.ok{color:var(--green);}.mv.warn{color:var(--red);}
 
 /* TOOLTIP */
@@ -84,30 +89,34 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg)
 .tip-overlay.show{display:block;}
 .tip-box{
   position:fixed;z-index:100;
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  box-shadow:0 8px 40px rgba(30,45,90,.18);
-  padding:18px;width:370px;max-height:80vh;overflow-y:auto;
+  background:#fff;border:1px solid var(--border);
+  border-radius:8px;
+  box-shadow:0 8px 40px rgba(0,0,0,.12);
+  padding:24px;width:360px;max-height:80vh;overflow-y:auto;
 }
-.tip-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.tip-name{font-size:15px;font-weight:700;}
-.tip-ma{font-size:10px;color:var(--muted);margin-top:2px;}
-.tip-close{background:var(--red-bg);color:var(--red);border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:12px;font-weight:700;}
-.risk-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.rc{font-size:10px;padding:3px 8px;border-radius:99px;font-weight:600;}
-.rc-bad{background:var(--red-bg);color:var(--red);}
-.rc-ok{background:var(--green-bg);color:var(--green);}
-.tip-sec{margin-bottom:14px;}
-.tip-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;}
-.tip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
-.tip-m{background:var(--bg);border-radius:10px;padding:9px;text-align:center;}
-.tip-m .tv{font-size:15px;font-weight:800;}
-.tip-m .tk{font-size:10px;color:var(--muted);margin-top:2px;}
-.note-item{font-size:12px;padding:7px 10px;background:var(--amber-bg);border-radius:8px;margin-bottom:5px;line-height:1.4;}
+.tip-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.tip-name{font-size:15px;font-weight:600;}
+.tip-ma{font-size:11px;color:var(--muted);margin-top:3px;}
+.tip-close{background:none;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;transition:all .12s;}
+.tip-close:hover{color:var(--red);border-color:var(--red);}
+.risk-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.rc{font-size:10px;padding:3px 8px;border-radius:2px;font-weight:500;border:1px solid;}
+.rc-bad{background:var(--red-bg);color:var(--red);border-color:#ffd0d0;}
+.rc-ok{background:var(--green-bg);color:var(--green);border-color:#c5f0da;}
+.tip-divider{height:1px;background:var(--border);margin:14px 0;}
+.tip-sec{margin-bottom:16px;}
+.tip-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;}
+.tip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.tip-m{background:#fafafa;border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;}
+.tip-m .tv{font-size:16px;font-weight:700;color:var(--ink);}
+.tip-m .tk{font-size:10px;color:var(--muted);margin-top:3px;}
+.note-item{font-size:12px;padding:8px 12px;border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 4px 4px 0;margin-bottom:6px;line-height:1.5;}
 .note-date{font-size:10px;color:var(--amber);font-weight:600;margin-bottom:2px;}
-.chart-wrap{height:150px;margin-top:8px;}
-.no-data{color:var(--muted);font-size:12px;text-align:center;padding:12px;}
+.chart-wrap{height:150px;margin-top:10px;}
+.no-data{color:var(--muted);font-size:12px;text-align:center;padding:16px 0;}
 
 @media(max-width:600px){
+  body{padding:16px;}
   .stat-group{display:none;}
   .tip-box{width:calc(100vw - 20px);left:10px!important;}
 }
@@ -116,11 +125,9 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg)
 <body>
 <div class="wrap">
   <div class="page-title">Quản lý chung</div>
-  <div class="page-sub">Tất cả lớp · Bấm vào lớp để xem học viên · Bấm học viên để xem chi tiết</div>
+  <div class="page-sub">Tổng quan tất cả lớp · Bấm vào lớp để xem học viên · Bấm học viên để xem chi tiết</div>
   <div id="classArea">
-    <div class="loading">
-      <div class="spinner"></div><br>Đang tải dữ liệu tất cả lớp…
-    </div>
+    <div class="loading"><div class="spinner"></div><br>Đang tải dữ liệu…</div>
   </div>
 </div>
 
@@ -128,13 +135,14 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg)
 <div class="tip-box" id="tipBox" style="display:none">
   <div class="tip-head">
     <div><div class="tip-name" id="tipName"></div><div class="tip-ma" id="tipMa"></div></div>
-    <button class="tip-close" onclick="closeTip()">✕ Đóng</button>
+    <button class="tip-close" onclick="closeTip()">Đóng</button>
   </div>
   <div class="risk-chips" id="tipRisks"></div>
   <div class="tip-sec">
     <div class="tip-lbl">Chỉ số</div>
     <div class="tip-grid" id="tipMetrics"></div>
   </div>
+  <div class="tip-divider"></div>
   <div class="tip-sec" id="tipNotesSec" style="display:none">
     <div class="tip-lbl">Ghi chú trong lớp</div>
     <div id="tipNotes"></div>
@@ -165,16 +173,18 @@ async function init(){
     const allStats=await apiGet('getAllClassStats');
     const area=document.getElementById('classArea');
     area.innerHTML='';
-    allStats.forEach(d=>{
-      const worst=Math.min(d.pctDiHoc,d.pctTuVung,d.pctBuBai);
-      const status=worst>=80?'good':worst>=60?'warn':'bad';
+    const wrap=document.createElement('div');
+    wrap.style.border='1px solid var(--border)';
+    wrap.style.borderRadius='8px';
+    wrap.style.overflow='hidden';
+    allStats.forEach((d,idx)=>{
       const div=document.createElement('div');
       div.className='class-block';
       div.innerHTML=`
-        <div class="class-bar status-${status}" id="bar-${d.lop}" onclick="toggleClass('${d.lop}')">
+        <div class="class-bar" id="bar-${d.lop}" onclick="toggleClass('${d.lop}')">
           <div class="cb-left">
-            <div class="cb-name">📚 ${d.lop}</div>
-            <div class="cb-meta">Khai giảng: ${d.ngayKhaiGiang} · Buổi ${d.soiBuoi} · Sĩ số: ${d.siSo}${d.nghiHoc?' · Nghỉ: '+d.nghiHoc:''}${d.baoLuu?' · Bảo lưu: '+d.baoLuu:''}</div>
+            <div class="cb-name">${d.lop}</div>
+            <div class="cb-meta">Khai giảng: ${d.ngayKhaiGiang} &nbsp;·&nbsp; Buổi ${d.soiBuoi} &nbsp;·&nbsp; Sĩ số: ${d.siSo}${d.nghiHoc?' &nbsp;·&nbsp; Nghỉ: '+d.nghiHoc:''}${d.baoLuu?' &nbsp;·&nbsp; Bảo lưu: '+d.baoLuu:''}</div>
           </div>
           <div class="cb-right">
             <div class="stat-group">
@@ -188,10 +198,11 @@ async function init(){
         <div class="student-list" id="list-${d.lop}">
           <div class="list-msg">Bấm vào thanh lớp để tải danh sách học viên…</div>
         </div>`;
-      area.appendChild(div);
+      wrap.appendChild(div);
     });
+    area.appendChild(wrap);
   }catch(e){
-    document.getElementById('classArea').innerHTML='<div class="list-msg" style="color:red">Lỗi tải dữ liệu: '+e.message+'</div>';
+    document.getElementById('classArea').innerHTML='<div class="list-msg" style="color:var(--red)">Lỗi tải dữ liệu: '+e.message+'</div>';
   }
 }
 
@@ -206,29 +217,29 @@ async function toggleClass(lop){
   list.innerHTML='<div class="list-msg">Đang tải…<div class="loading-bar"><div class="loading-bar-fill"></div></div></div>';
   try{
     const data=await apiGet('getDashboard',{lop});
-    if(data.error){list.innerHTML='<div class="list-msg" style="color:red">'+data.error+'</div>';return;}
+    if(data.error){list.innerHTML='<div class="list-msg" style="color:var(--red)">'+data.error+'</div>';return;}
     detailCache[lop]=data;
     renderStudents(lop,data.students);
-  }catch(e){list.innerHTML='<div class="list-msg" style="color:red">Lỗi: '+e.message+'</div>';}
+  }catch(e){list.innerHTML='<div class="list-msg" style="color:var(--red)">Lỗi: '+e.message+'</div>';}
 }
 
 function renderStudents(lop,students){
   const list=document.getElementById('list-'+lop);
   if(!students||!students.length){list.innerHTML='<div class="list-msg">Không có học viên.</div>';return;}
   list.innerHTML=students.map(s=>{
-    const vTxt=s.tongVang?`${s.tongVang} (${s.vangCP}CP·${s.vangKP}KP)`:'0';
+    const vTxt=s.tongVang?`${s.tongVang} (${s.vangCP} có phép · ${s.vangKP} không phép)`:'0';
     const avgV=s.avgVocab!==null?s.avgVocab+'%':'—';
     const avgCls=s.avgVocab!==null?(s.avgVocab>=80?'ok':'warn'):'';
     const sc=s.maxScore!==null?s.maxScore:'—';
     return `<div class="student-row${s.isRisk?' risk':''}" id="sr-${s.maHV}" onclick="toggleTip('${lop}','${s.maHV}',event)">
       <div class="s-left">
-        <div class="s-name">${s.tenHV}${s.isRisk?'<span class="risk-tag">⚠ Cần chú ý</span>':''}</div>
+        <div class="s-name">${s.tenHV}${s.isRisk?'<span class="risk-tag">Cần chú ý</span>':''}</div>
         <div class="s-ma">${s.maHV}</div>
       </div>
       <div class="s-metrics">
         <div class="sm"><div class="mv ${s.tongVang>3?'warn':''}">${vTxt}</div><div class="mk">Vắng</div></div>
         <div class="sm"><div class="mv">${s.daBu}/${s.tongVang}</div><div class="mk">Đã bù</div></div>
-        <div class="sm"><div class="mv ${avgCls}">${avgV}</div><div class="mk">Từ vựng</div></div>
+        <div class="sm"><div class="mv ${avgCls}">${avgV}</div><div class="mk">Từ vựng tb</div></div>
         <div class="sm"><div class="mv">${sc}</div><div class="mk">Điểm cao nhất</div></div>
       </div>
     </div>`;
@@ -257,17 +268,19 @@ function toggleTip(lop,maHV,event){
     `<span class="rc ${s.risks&&s.risks[r.k]?'rc-bad':'rc-ok'}">${s.risks&&s.risks[r.k]?'⚠':'✓'} ${r.lbl}</span>`
   ).join('');
   document.getElementById('tipMetrics').innerHTML=[
-    {v:s.tongVang,k:'Buổi vắng',sub:`${s.vangCP}CP · ${s.vangKP}KP`},
+    {v:s.tongVang,k:'Buổi vắng',sub:`${s.vangCP} CP · ${s.vangKP} KP`},
     {v:`${s.daBu}/${s.tongVang}`,k:'Đã bù bài'},
-    {v:s.avgVocab!==null?s.avgVocab+'%':'—',k:'% Từ vựng tb'},
-    {v:s.phutTre||0,k:'Phút trễ tổng'},
+    {v:s.avgVocab!==null?s.avgVocab+'%':'—',k:'Từ vựng tb'},
+    {v:s.phutTre||0,k:'Phút trễ (tổng)'},
     {v:s.phutVe||0,k:'Phút về sớm'},
     {v:s.btvnThieu||0,k:'BTVN thiếu'}
-  ].map(m=>`<div class="tip-m"><div class="tv">${m.v}</div><div class="tk">${m.k}</div>${m.sub?`<div class="tk">${m.sub}</div>`:''}</div>`).join('');
+  ].map(m=>`<div class="tip-m"><div class="tv">${m.v}</div><div class="tk">${m.k}</div>${m.sub?`<div class="tk" style="color:var(--muted)">${m.sub}</div>`:''}</div>`).join('');
   const notesSec=document.getElementById('tipNotesSec');
   if(s.ghiChu&&s.ghiChu.length){
     notesSec.style.display='block';
-    document.getElementById('tipNotes').innerHTML=s.ghiChu.map(g=>`<div class="note-item"><div class="note-date">📅 ${g.ngay}</div>${g.text}</div>`).join('');
+    document.getElementById('tipNotes').innerHTML=s.ghiChu.map(g=>
+      `<div class="note-item"><div class="note-date">${g.ngay}</div>${g.text}</div>`
+    ).join('');
   }else notesSec.style.display='none';
   const scoreSec=document.getElementById('tipScoreSec');
   if(s.scores&&s.scores.length){
@@ -279,9 +292,9 @@ function toggleTip(lop,maHV,event){
       data:{
         labels:sorted.map(x=>x.test||x.ngay),
         datasets:[
-          {label:'Overall',data:sorted.map(x=>x.score),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',tension:.35,pointRadius:4,pointBackgroundColor:'#3b82f6'},
-          {label:'Nghe',data:sorted.map(x=>x.nghe),borderColor:'#10b981',tension:.35,pointRadius:3,hidden:true},
-          {label:'Đọc',data:sorted.map(x=>x.doc),borderColor:'#f59e0b',tension:.35,pointRadius:3,hidden:true}
+          {label:'Overall',data:sorted.map(x=>x.score),borderColor:'#1428A0',backgroundColor:'rgba(20,40,160,.05)',tension:.35,pointRadius:4,pointBackgroundColor:'#1428A0'},
+          {label:'Nghe',data:sorted.map(x=>x.nghe),borderColor:'#2eb872',tension:.35,pointRadius:3,hidden:true},
+          {label:'Đọc',data:sorted.map(x=>x.doc),borderColor:'#f5a623',tension:.35,pointRadius:3,hidden:true}
         ]
       },
       options:{
@@ -294,12 +307,12 @@ function toggleTip(lop,maHV,event){
   const box=document.getElementById('tipBox');
   box.style.display='block';
   document.getElementById('tipOverlay').classList.add('show');
-  const M=12,W=370;
-  let left=event.clientX+14,top=event.clientY-16;
+  const M=12,W=360;
+  let left=event.clientX+16,top=event.clientY-16;
   if(left+W>window.innerWidth-M)left=event.clientX-W-8;
   if(left<M)left=M;
-  const boxH=Math.min(500,window.innerHeight*.8);
-  if(top+boxH>window.innerHeight-M)top=window.innerHeight-boxH-M;
+  const bH=Math.min(520,window.innerHeight*.82);
+  if(top+bH>window.innerHeight-M)top=window.innerHeight-bH-M;
   if(top<M)top=M;
   box.style.left=left+'px';box.style.top=top+'px';
 }
@@ -311,7 +324,6 @@ function closeTip(){
   document.getElementById('tipBox').style.display='none';
   document.getElementById('tipOverlay').classList.remove('show');
 }
-
 init();
 </script>
 </body>
