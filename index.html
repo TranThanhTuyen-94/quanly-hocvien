@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý lớp học</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--ink:#1e2d5a;--muted:#6b7da8;--border:#dde5f7;
+  --green:#10b981;--green-bg:#d1fae5;
+  --blue:#3b82f6;--blue-bg:#dbeafe;
+  --amber:#f59e0b;--amber-bg:#fef3c7;
+  --purple:#8b5cf6;--purple-bg:#ede9fe;
+  --red:#ef4444;--red-bg:#fee2e2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);overflow:hidden;height:100vh;}
+
+.top-bar{
+  height:52px;
+  background:linear-gradient(135deg,#1e2d5a 0%,#2563eb 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;position:fixed;top:0;left:0;right:0;z-index:10;
+}
+.logo{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.date-str{font-size:12px;color:rgba(255,255,255,.75);}
+
+.tab-bar{
+  height:48px;background:var(--card);border-bottom:1px solid var(--border);
+  display:flex;position:fixed;top:52px;left:0;right:0;z-index:9;
+  padding:0 8px;gap:2px;
+  box-shadow:0 2px 8px rgba(30,45,90,.07);
+}
+.tab-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:0 18px;border:none;background:none;cursor:pointer;
+  font-size:14px;font-weight:500;color:var(--muted);
+  border-bottom:2px solid transparent;white-space:nowrap;
+  transition:color .12s;font-family:inherit;
+}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+
+.sub-bar{
+  display:none;height:44px;background:var(--bg);border-bottom:1px solid var(--border);
+  position:fixed;top:100px;left:0;right:0;z-index:8;
+  align-items:center;padding:0 20px;gap:8px;
+}
+.sub-bar.show{display:flex;}
+.sub-btn{
+  padding:7px 16px;border-radius:99px;
+  border:1.5px solid var(--border);background:var(--card);
+  font-size:13px;font-weight:500;color:var(--muted);
+  cursor:pointer;font-family:inherit;transition:all .12s;
+}
+.sub-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+.frame-wrap{position:fixed;top:100px;left:0;right:0;bottom:0;background:var(--bg);}
+.frame-wrap.has-sub{top:144px;}
+.module-frame{display:none;width:100%;height:100%;border:none;}
+.module-frame.active{display:block;}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">📚 Quản lý lớp học</div>
+  <div class="date-str" id="dateStr"></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('quanly',this)">📊 Quản lý chung</button>
+  <button class="tab-btn" onclick="switchTab('diemdanh',this)">✅ Điểm danh</button>
+  <button class="tab-btn" onclick="switchTab('tuvung',this)">📖 Từ vựng</button>
+  <button class="tab-btn" onclick="switchTab('btvn',this)">📝 BTVN</button>
+</div>
+
+<div class="sub-bar" id="subBar">
+  <button class="sub-btn active" onclick="switchVocab('dotrenlop',this)">🎯 Dò bài trên lớp</button>
+  <button class="sub-btn" onclick="switchVocab('tuluyen',this)">🏠 Tự ôn tại nhà</button>
+</div>
+
+<div class="frame-wrap" id="frameWrap">
+  <iframe id="frame-quanly"    src="quanly.html" class="module-frame active"></iframe>
+  <iframe id="frame-diemdanh"  class="module-frame"></iframe>
+  <iframe id="frame-dotrenlop" class="module-frame"></iframe>
+  <iframe id="frame-tuluyen"   class="module-frame"></iframe>
+  <iframe id="frame-btvn"      class="module-frame"></iframe>
+</div>
+
+<script>
+document.getElementById('dateStr').textContent =
+  new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+const FILES={
+  diemdanh:'diemdanh.html',
+  btvn:'btvn.html',
+  dotrenlop:'tuvung-dotrenlop.html',
+  tuluyen:'tuvung-tuluyen.html'
+};
+const loaded={quanly:true};
+let curVocab='dotrenlop';
+
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const sub=document.getElementById('subBar'),wrap=document.getElementById('frameWrap');
+  if(name==='tuvung'){
+    sub.classList.add('show');wrap.classList.add('has-sub');
+    showFrame('frame-'+curVocab,curVocab);
+    return;
+  }
+  sub.classList.remove('show');wrap.classList.remove('has-sub');
+  showFrame('frame-'+name,name);
+}
+
+function switchVocab(name,btn){
+  curVocab=name;
+  document.querySelectorAll('.sub-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  showFrame('frame-'+name,name);
+}
+
+function showFrame(id,key){
+  document.querySelectorAll('.module-frame').forEach(f=>f.classList.remove('active'));
+  const f=document.getElementById(id);
+  if(!loaded[key]){f.src=FILES[key];loaded[key]=true;}
+  f.classList.add('active');
+}
+</script>
+</body>
+</html>
